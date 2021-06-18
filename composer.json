@@ -1,0 +1,26 @@
+{
+    "name": "increment/security",
+    "description": "Dynamic comment backend module or Discussion module",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "kennCK",
+            "email": "kennettecanales@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Increment\\Security\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Increment\\Security\\SecurityServiceProvider"
+            ]
+        }
+    }
+}
