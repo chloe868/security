@@ -2,8 +2,10 @@
 
 namespace Increment\Security\Http;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\APIController;
-use Increment\Finance\Models\DeviceInfo;
+use Increment\Security\Models\DeviceInfo;
+use Carbon\Carbon;
 
 class DeviceInfoController extends APIController
 {
