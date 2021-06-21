@@ -17,6 +17,5 @@ class DeviceInfoController extends APIController
 			$result = DeviceInfo::where($column, '=', $value)->orderBy('created_at', 'asc')->limit(1)->get();
 			return sizeof($result) > 0 ? $result[0] : null;
 		}
-
-    
+ 
 }
