@@ -124,5 +124,21 @@ class DeviceInfoController extends APIController
 		  }
 		return $this->response();
 	}
+
+	public function update(Request $request){
+		$data = $request->all();
+		$on = DeviceInfo::where('id', '=', $data['id'])->update(array(
+			'status' => $data['status'],
+			'updated_at' => Carbon::now()
+		));
+		$off = DeviceInfo::where('id', '!=', $data['id'])->update(array(
+			'status' => 'secondary',
+			'updated_at' => Carbon::now()
+		));
+
+		$this->response['data'] = $on;
+
+		return $this->response();
+	}
  
 }
