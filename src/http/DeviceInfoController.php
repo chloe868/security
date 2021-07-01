@@ -36,34 +36,13 @@ class DeviceInfoController extends APIController
 				'details' => $details,
 				'status' => $status
 			),
-				$flag = true
+			$flag = true
 			);
-	
 			if($result['error'] != null){
-				$this->response['error'] = $result['error'];
 				$this->response['data'] = $result['data'];
 				return $this->response();
 			}
 			
-			app($this->firebaseController)->sendNew(
-				array(
-					'data' => array(
-						'from_unique_code' => $unique_code,
-						'to_account' => $account_id,
-						'model' => $model,
-						'status' => $status,
-						'details' => $details,
-						'topic'   => 'Payhiram-'.$account_id['id'],
-						'payload' => 'primary_device'
-					),
-					'notification' => array(
-						'title' => 'OTP Notification',
-						'body'  => 'Your payhiram code for device verification is ',
-						'imageUrl' => env('DOMAIN').'increment/v1/storage/logo/logo.png'
-					),
-					'topic'   => 'Payhiram-'.$account_id['id']
-				)
-			);
 		}else{
 			$this->model = new DeviceInfo();
 			$params = array(
@@ -93,15 +72,15 @@ class DeviceInfoController extends APIController
 				// send email function here
 			}
 			// run jobs here
-			$parameter = array(
-				'from'    => $data['unique_code'],
-				'to'      => $data['account_id'],
-				'payload' => $data["status"],
-				'payload_value' => $entry["details"],
-				'route'   => 'device_info/'.$entry["code"],
-				'created_at'  => Carbon::now()
-			);
-			app($this->notificationClass)->createByParams($parameter);
+			// $parameter = array(
+			// 	'from'    => $data['account_id'],
+			// 	'to'      => $data['account_id'],
+			// 	'payload' => 'device',
+			// 	'payload_value' => $entry["unique_code"],
+			// 	'route'   => 'device_info/'.$entry["details"],
+			// 	'created_at'  => Carbon::now()
+			// );
+			// app($this->notificationClass)->createByParams($parameter);
 		}
 		return array(
 			'data' => $this->response['data'],
