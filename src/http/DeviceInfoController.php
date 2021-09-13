@@ -66,21 +66,21 @@ class DeviceInfoController extends APIController
 		$entry["status"] = $data["status"];
 		$this->model = new DeviceInfo();
 		$this->insertDB($entry);
-
+		$primary = $this->retrievePrimary($data["account_id"]);
 		if($this->response['data'] > 0){
 			if($flag == true){
 				// send email function here
 			}
 			// run jobs here
-			// $parameter = array(
-			// 	'from'    => $data['account_id'],
-			// 	'to'      => $data['account_id'],
-			// 	'payload' => 'device',
-			// 	'payload_value' => $entry["unique_code"],
-			// 	'route'   => 'device_info/'.$entry["details"],
-			// 	'created_at'  => Carbon::now()
-			// );
-			// app($this->notificationClass)->createByParams($parameter);
+			$parameter = array(
+				'from'    => $data['account_id'],
+				'to'      => $data['account_id'],
+				'payload' => 'device',
+				'payload_value' => $entry["unique_code"],
+				'route'   => 'device_info/'.$entry["details"],
+				'created_at'  => Carbon::now()
+			);
+			app($this->notificationClass)->createByParamsByDevice($parameter, $primary['unique_code']);
 		}
 		return array(
 			'data' => $this->response['data'],
@@ -104,6 +104,11 @@ class DeviceInfoController extends APIController
 		return $this->response();
 	}
 
+	public function retrievePrimary($account_id){
+		$var = DeviceInfo::where('account_id', '=', $account_id)->where('status', '=', 'primary')->get();
+		return sizeof($var) > 0 ? $var[0] : null;
+	}
+
 	public function update(Request $request){
 		$data = $request->all();
 		$on = DeviceInfo::where('id', '=', $data['id'])->update(array(
@@ -119,5 +124,4 @@ class DeviceInfoController extends APIController
 
 		return $this->response();
 	}
- 
 }
